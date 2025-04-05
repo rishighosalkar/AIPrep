@@ -1,0 +1,1 @@
+Build an AI-powered mock interview platform using microservices architecture and NLP to generate questions, evaluate user answers in real time, and provide intelligent feedback — no media upload required.
