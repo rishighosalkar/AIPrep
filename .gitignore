@@ -1,0 +1,4 @@
+services/UserService/Migrations
+services/UserService/bin
+services/UserService/obj
+services/.vs
