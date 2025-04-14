@@ -6,6 +6,7 @@ using System.Text;
 using UserService.Data;
 using UserService.DTOs;
 using UserService.Models;
+using UserService.Helpers;
 
 namespace UserService.Services
 {
@@ -13,11 +14,13 @@ namespace UserService.Services
     {
         private readonly AppDbContext _db;
         private readonly IConfiguration _config;
-
-        public AuthService(AppDbContext db, IConfiguration config)
+        private readonly ITokenService _tokenService;
+        public AuthService(AppDbContext db, IConfiguration config, ITokenService tokenService)
         {
             _db = db;
             _config = config;
+            _tokenService = tokenService;
+
         }
 
         public async Task<AuthResult> LoginUserAsync(LoginDTO dto)
@@ -29,7 +32,7 @@ namespace UserService.Services
                 return new AuthResult { Success = false, Message = "Invalid Credentials." };
             }
 
-            var token = GenerateJWTToken(user);
+            var token = _tokenService.GeneratToken(user);
 
             return new AuthResult { Success=true, Message ="Login Successful.", Token = token };
         }
@@ -53,31 +56,6 @@ namespace UserService.Services
             await _db.SaveChangesAsync();
 
             return new AuthResult { Success = true, Message = "User Registered Successfully." };
-        }
-
-        private string GenerateJWTToken(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_config["Jwt:Secret"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("id", user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.FullName)
-                }),
-                Expires = DateTime.UtcNow.AddHours(2),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature
-                 )
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
         }
     }
 }
