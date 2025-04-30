@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using UserService.Data;
 using UserService.DTOs;
@@ -11,6 +13,7 @@ using UserService.Helpers;
 using UserService.Middlewares;
 using UserService.Services;
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +21,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService.Services.UserService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddEndpointsApiExplorer();
@@ -45,6 +48,7 @@ builder.Services.AddAuthentication(options => {
         ValidAudience = builder.Configuration["JwtSettings:ValidAudience"],
         RequireExpirationTime = bool.Parse(builder.Configuration["JwtSettings:RequireExpirationTime"]),
         ValidateLifetime = bool.Parse(builder.Configuration["JwtSettings:ValidateLifeTime"]),
+        NameClaimType = ClaimTypes.NameIdentifier,
         ClockSkew = TimeSpan.FromMinutes(5)
     };
 
@@ -57,7 +61,7 @@ builder.Services.AddAuthentication(options => {
         },
         OnMessageReceived = context =>
         {
-            Console.WriteLine("Token received: " + context.Token ?? "No token received");
+            Console.WriteLine("Token received: " + (context.Token ?? "No token received"));
             return Task.CompletedTask;
         },
         OnChallenge = context =>
@@ -68,10 +72,10 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
-//builder.Services.AddCors(policyBuilder =>
-//    policyBuilder.AddDefaultPolicy(policy =>
-//        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyHeader())
-//);
+builder.Services.AddCors(policyBuilder =>
+    policyBuilder.AddDefaultPolicy(policy =>
+        policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
+);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -119,11 +123,13 @@ if (app.Environment.IsDevelopment())
 
 //app.UseSwagger();
 //app.UseSwaggerUI();
+app.UseCors();
+
 app.UseHttpsRedirection();
-//app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 
 app.MapControllers();

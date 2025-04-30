@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using UserService.DTOs;
 using UserService.Services;
@@ -7,8 +8,8 @@ using UserService.Services;
 namespace UserService.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -17,12 +18,14 @@ namespace UserService.Controllers
             _userService = userService;
         }
 
-        private Guid GetUserId() => Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        private Guid GetUserId() => Guid.Parse(User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value);
 
 
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfile()
         {
+            var token = Request.Headers["Authorization"].ToString(); ;
+            Console.WriteLine("Token is" + token);
             var profile = await _userService.GetUserProfileAsync(GetUserId());
 
             return profile == null ? NotFound("User not found.") : Ok(profile);

@@ -5,11 +5,18 @@ import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false);
 
   useEffect(()=>{
     const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+    setIsAuthenticated(token !== null);
+    setIsAuthChecked(true);
+    console.log("IsAuthenticated",isAuthenticated);
   }, []);
+
+  if (!isAuthChecked) {
+    return <div>Loading...</div>; // or a spinner
+  }
 
   return (
       <Routes>

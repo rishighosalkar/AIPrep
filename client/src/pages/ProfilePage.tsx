@@ -21,13 +21,18 @@ export default function ProfilePage() {
             return;
         }
         try {
-            
-            console.log("Token", token);
-            const res = await axios.get("https://localhost:7180/api/user/profile", {
-                headers:{
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const res = await getProfile(token);
+
+            // console.log(res.data);
+
+            const userProfile = {
+                id: res.data.id,
+                fullName: res.data.fullName,
+                email: res.data.email
+            }
+
+            setUser(res.data);
+            console.log(user);
         }
         catch(err: any){
             console.error("Error fetching profile", err)

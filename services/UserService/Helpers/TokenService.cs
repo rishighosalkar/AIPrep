@@ -1,7 +1,4 @@
-﻿using JWT.Algorithms;
-using JWT.Serializers;
-using JWT;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,7 +8,7 @@ using UserService.Models;
 
 namespace UserService.Helpers
 {
-    public class TokenService : ITokenService
+    public class TokenService
     {
         private readonly JwtSettings _jwtSettings;
 
@@ -22,13 +19,13 @@ namespace UserService.Helpers
 
         public string GeneratToken(User user)
         {
-            var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-            //Console.WriteLine("Secret from tokengenerator",_jwtSettings.Secret.ToString());
+            var claims = new[] {
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email!=null?user.Email:string.Empty),
+                    new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString() !=null?user.Id.ToString():Guid.Empty.ToString()),
+                    new Claim(JwtRegisteredClaimNames.NameId, user.FullName!=null?user.FullName:string.Empty),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString() !=null?user.Id.ToString():Guid.Empty.ToString())
+                };
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.IssuerSigningKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -36,18 +33,12 @@ namespace UserService.Helpers
                 _jwtSettings.ValidIssuer,
                 _jwtSettings.ValidAudience,
                 claims,
+                null,
                 expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private static double ConvertToUnixTimestamp(DateTime date)
-        {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
-            return Math.Floor(diff.TotalSeconds);
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using UserService.Data;
 using UserService.DTOs;
 using UserService.Models;
@@ -14,8 +10,8 @@ namespace UserService.Services
     {
         private readonly AppDbContext _db;
         private readonly IConfiguration _config;
-        private readonly ITokenService _tokenService;
-        public AuthService(AppDbContext db, IConfiguration config, ITokenService tokenService)
+        private readonly TokenService _tokenService;
+        public AuthService(AppDbContext db, IConfiguration config, TokenService tokenService)
         {
             _db = db;
             _config = config;
