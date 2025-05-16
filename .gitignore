@@ -1,4 +1,12 @@
+services/.vs
+
+#UserService
 services/UserService/Migrations
 services/UserService/bin
 services/UserService/obj
-services/.vs
+
+
+#InterviewService
+services/InterviewService/Migrations
+services/InterviewService/bin
+services/InterviewService/obj

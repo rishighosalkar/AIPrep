@@ -1,0 +1,27 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# VSCode and PyCharm
+.vscode/
+.idea/
+
+# Mac OS / Linux
+.DS_Store
+
+# Logs
+*.log
+
+# Pip files
+*.egg-info/
+pip-wheel-metadata/
+
+# Test cache
+.cache/
