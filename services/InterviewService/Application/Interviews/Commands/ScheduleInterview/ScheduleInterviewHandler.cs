@@ -1,8 +1,8 @@
 ﻿using InterviewService.Data;
-using InterviewService.Entities;
+using InterviewService.Domain.Entities;
 using MediatR;
 
-namespace InterviewService.Commands.ScheduleInterview
+namespace InterviewService.Application.Interviews.Commands.ScheduleInterview
 {
     public class ScheduleInterviewHandler : IRequestHandler<ScheduleInterviewCommand, Guid>
     {

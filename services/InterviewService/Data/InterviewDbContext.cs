@@ -1,4 +1,4 @@
-﻿using InterviewService.Entities;
+﻿using InterviewService.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace InterviewService.Data

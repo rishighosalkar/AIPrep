@@ -3,7 +3,7 @@ using InterviewService.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace InterviewService.Queries.GetInterview
+namespace InterviewService.Application.Queries.GetInterview
 {
     public class GetInterviewHandler : IRequestHandler<GetInterviewQuery, InterviewDto>
     {

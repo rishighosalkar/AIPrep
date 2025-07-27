@@ -1,9 +1,9 @@
-﻿namespace InterviewService.Entities
+﻿namespace InterviewService.Domain.Entities
 {
     public class Interview
     {
         public Guid Id { get; set; }
-        public string CandidateId { get; set; }
+        public Guid CandidateId { get; set; }
         public string Role {  get; set; }
         public DateTime ScheduledAt { get; set; }
         public DateTime? StartedAt { get; set; }

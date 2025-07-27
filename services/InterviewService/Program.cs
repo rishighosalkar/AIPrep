@@ -1,5 +1,6 @@
-using InterviewService.Commands.ScheduleInterview;
+using InterviewService.Application.Interviews.Commands.ScheduleInterview;
 using InterviewService.Data;
+using InterviewService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +19,11 @@ builder.Services.AddCors(policyBuilder =>
         policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
 );
 
+builder.Services.AddHttpClient<IQuestionGeneratorService, QuestionGeneratorService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:8001"); //fastapi service url
+});
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -35,5 +41,10 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapControllers();
 
 

@@ -1,14 +1,14 @@
-﻿using InterviewService.Entities;
+﻿using InterviewService.Domain.Entities;
 using MediatR;
 
-namespace InterviewService.Queries.GetInterview
+namespace InterviewService.Application.Queries.GetInterview
 {
     public record GetInterviewQuery(Guid InterviewId) : IRequest<InterviewDto>;
 
     public class InterviewDto
     {
         public Guid Id { get; set; }
-        public string CandidateId { get; set; }
+        public Guid CandidateId { get; set; }
         public string Role {  get; set; }
         public List<QuestionDto> Questions { get; set; } = new();
     }

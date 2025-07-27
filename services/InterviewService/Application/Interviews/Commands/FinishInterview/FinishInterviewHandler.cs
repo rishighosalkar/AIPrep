@@ -2,7 +2,7 @@
 using InterviewService.Exceptions;
 using MediatR;
 
-namespace InterviewService.Commands.FinishInterview
+namespace InterviewService.Application.Interviews.Commands.FinishInterview
 {
     public class FinishInterviewHandler : IRequestHandler<FinishInterviewCommand, Unit>
     {

@@ -1,9 +1,10 @@
-﻿using InterviewService.Commands.FinishInterview;
-using InterviewService.Commands.ScheduleInterview;
-using InterviewService.Commands.StartInterview;
+﻿using InterviewService.Application.Interviews.Commands.ScheduleInterview;
+using InterviewService.Application.Interviews.Commands.FinishInterview;
+using InterviewService.Application.Interviews.Commands.StartInterview;
 using InterviewService.Queries.GetInterview;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using InterviewService.Domain.Entities;
 
 namespace InterviewService.Controllers
 {
@@ -26,11 +27,11 @@ namespace InterviewService.Controllers
             return Ok(id);
         }
 
-        [HttpPost("{id}/start")]
-        public async Task<IActionResult> Start(Guid id)
+        [HttpPost("start")]
+        public async Task<IActionResult> Start([FromBody] StartInterviewRequest request)
         {
-            await _mediator.Send(new StartInterviewCommand(id));
-            return NoContent();
+            var interviewId = await _mediator.Send(new StartInterviewCommand(request.CandidateId, request.Role));
+            return Ok(new { interviewId });
         }
 
         [HttpPost("{id}/finish")]

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace InterviewService.Commands.FinishInterview
+namespace InterviewService.Application.Interviews.Commands.FinishInterview
 {
     public record FinishInterviewCommand(Guid InteriewId) : IRequest<Unit>;
 }

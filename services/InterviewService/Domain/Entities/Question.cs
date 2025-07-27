@@ -1,4 +1,4 @@
-﻿namespace InterviewService.Entities
+﻿namespace InterviewService.Domain.Entities
 {
     public class Question
     {
