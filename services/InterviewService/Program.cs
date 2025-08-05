@@ -1,5 +1,5 @@
-using InterviewService.Application.Interviews.Commands.ScheduleInterview;
-using InterviewService.Data;
+using InterviewService.Application.Commands.ScheduleInterview;
+using InterviewService.Infrastructure.Data;
 using InterviewService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +22,11 @@ builder.Services.AddCors(policyBuilder =>
 builder.Services.AddHttpClient<IQuestionGeneratorService, QuestionGeneratorService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:8001"); //fastapi service url
+});
+
+builder.Services.AddHttpClient("AnayticsApi", client =>
+{
+    client.BaseAddress = new Uri(""); //Analytics 
 });
 
 // Add services to the container.

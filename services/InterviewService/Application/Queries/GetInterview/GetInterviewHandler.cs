@@ -1,5 +1,5 @@
-﻿using InterviewService.Data;
-using InterviewService.Exceptions;
+﻿using InterviewService.Exceptions;
+using InterviewService.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

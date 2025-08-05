@@ -1,17 +1,17 @@
-﻿using InterviewService.Data;
-using InterviewService.Domain.Entities;
+﻿using InterviewService.Domain.Entities;
 using InterviewService.Exceptions;
+using InterviewService.Infrastructure.Data;
 using InterviewService.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace InterviewService.Application.Interviews.Commands.StartInterview
+namespace InterviewService.Application.Commands.StartInterview
 {
-    public class StartInterviewHandler : IRequestHandler<StartInterviewCommand, Guid>
+    public class StartInterviewCommandHandler : IRequestHandler<StartInterviewCommand, Guid>
     {
         private readonly InterviewDbContext _context;
         private readonly IQuestionGeneratorService _questionGeneratorService;
-        public StartInterviewHandler(InterviewDbContext context, IQuestionGeneratorService questionGeneratorService)
+        public StartInterviewCommandHandler(InterviewDbContext context, IQuestionGeneratorService questionGeneratorService)
         {
             _context = context;
             _questionGeneratorService = questionGeneratorService;

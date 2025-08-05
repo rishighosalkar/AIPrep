@@ -1,10 +1,10 @@
-﻿using InterviewService.Application.Interviews.Commands.ScheduleInterview;
-using InterviewService.Application.Interviews.Commands.FinishInterview;
-using InterviewService.Application.Interviews.Commands.StartInterview;
-using InterviewService.Queries.GetInterview;
+﻿using InterviewService.Application.Commands.FinishInterview;
+using InterviewService.Application.Commands.StartInterview;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using InterviewService.Domain.Entities;
+using InterviewService.Application.Queries.GetInterview;
+using InterviewService.Application.Commands.ScheduleInterview;
 
 namespace InterviewService.Controllers
 {

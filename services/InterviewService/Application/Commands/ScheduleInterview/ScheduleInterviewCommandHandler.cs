@@ -1,13 +1,13 @@
-﻿using InterviewService.Data;
-using InterviewService.Domain.Entities;
+﻿using InterviewService.Domain.Entities;
+using InterviewService.Infrastructure.Data;
 using MediatR;
 
-namespace InterviewService.Application.Interviews.Commands.ScheduleInterview
+namespace InterviewService.Application.Commands.ScheduleInterview
 {
-    public class ScheduleInterviewHandler : IRequestHandler<ScheduleInterviewCommand, Guid>
+    public class ScheduleInterviewCommandHandler : IRequestHandler<ScheduleInterviewCommand, Guid>
     {
         private readonly InterviewDbContext _context;
-        public ScheduleInterviewHandler(InterviewDbContext context)
+        public ScheduleInterviewCommandHandler(InterviewDbContext context)
         {
             _context = context;
         }
